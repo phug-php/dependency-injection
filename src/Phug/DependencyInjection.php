@@ -27,46 +27,37 @@ class DependencyInjection implements DependencyInjectionInterface
     /**
      * @param $name
      *
-     * @return $this
-     *
      * @throws DependencyException
+     *
+     * @return $this
      */
     public function setAsRequired($name)
     {
-        $requirement = $this->getProvider($name);
+        $provider = $this->getProvider($name)
+            ->setRequired(true)
+            ->getDependency();
 
-        $requirement->setRequired(true);
-
-        $provider = $requirement->getDependency();
+        $lastDependencyRequired = null;
 
         try {
             foreach ($provider->getDependencies() as $dependencyName) {
-                try {
-                    $this->setAsRequired($dependencyName);
-                } catch (DependencyException $e) {
-                    if ($e->getCode() !== 1) {
-                        throw $e;
-                    }
-
-                    if ($e->getCode() === 2) {
-                        throw new DependencyException(
-                            $e->getMessage().
-                            ' < '.$dependencyName,
-                            2
-                        );
-                    }
-
-                    throw new DependencyException($dependencyName, 2);
-                }
+                $lastDependencyRequired = $dependencyName;
+                $this->setAsRequired($dependencyName);
             }
         } catch (DependencyException $e) {
-            if ($e->getCode() !== 2) {
-                throw $e;
+            switch ($e->getCode()) {
+                case 1:
+                    throw new DependencyException(
+                        'Dependency not found: '.$lastDependencyRequired.' < '.$name,
+                        2
+                    );
+                case 2:
+                    throw new DependencyException(
+                        $e->getMessage().
+                        ' < '.$name,
+                        2
+                    );
             }
-
-            throw new DependencyException(
-                'Dependency not found: '.$e->getMessage()
-            );
         }
 
         return $this;
@@ -157,9 +148,9 @@ class DependencyInjection implements DependencyInjectionInterface
      * @param string         $name
      * @param array|callable $provider
      *
-     * @return DependencyInjection
-     *
      * @throws DependencyException
+     *
+     * @return DependencyInjection
      */
     public function provider($name, $provider)
     {
@@ -195,9 +186,9 @@ class DependencyInjection implements DependencyInjectionInterface
     /**
      * @param string $name
      *
-     * @return Requirement
-     *
      * @throws DependencyException
+     *
+     * @return Requirement
      */
     public function getProvider($name)
     {
