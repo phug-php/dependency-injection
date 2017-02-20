@@ -2,7 +2,6 @@
 
 namespace Phug;
 
-use Closure;
 use Phug\DependencyInjection\Dependency;
 
 interface DependencyInjectionInterface

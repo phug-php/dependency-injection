@@ -83,7 +83,7 @@ class DependencyInjection implements DependencyInjectionInterface
             $string = '';
             if ($parameter->isArray()) {
                 $string .= 'array ';
-            } else if ($parameter->getClass()) {
+            } elseif ($parameter->getClass()) {
                 $string .= $parameter->getClass()->name.' ';
             }
             if ($parameter->isPassedByReference()) {
@@ -93,7 +93,7 @@ class DependencyInjection implements DependencyInjectionInterface
             if ($parameter->isOptional()) {
                 $string .= ' = '.var_export($parameter->getDefaultValue(), true);
             }
-            $parameters [] = $string;
+            $parameters[] = $string;
         }
         $code .= implode(', ', $parameters);
         $code .= ')'.($storageVariable ? ' use (&$'.$storageVariable.')' : '').' {'.PHP_EOL;

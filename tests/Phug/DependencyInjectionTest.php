@@ -21,7 +21,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         });
         $injector->provider('bar', ['foo', function ($foo) {
             return function ($start, $end) use ($foo) {
-                return $foo($start) . $end;
+                return $foo($start).$end;
             };
         }]);
 
@@ -110,13 +110,13 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
             "  'a' => function (\$n) use (&\$module) {",
             "    \$b = \$module['b'];",
             "    \$c = \$module['c'];",
-            "    return \$n + \$b() + \$c;",
-            "  },",
+            '    return $n + $b() + $c;',
+            '  },',
             "  'b' => function () use (&\$module) {",
             "    \$d = \$module['d'];",
             "    \$c = \$module['c'];",
-            "    return \$d + \$c;",
-            "  },",
+            '    return $d + $c;',
+            '  },',
             "  'c' => 1,",
             "  'd' => 2,",
             '];',
@@ -134,7 +134,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         $actual = implode(PHP_EOL, $actual);
 
         self::assertSame($expected, $actual);
-        self::assertSame(7, eval($export . 'return $module["a"](3);'));
+        self::assertSame(7, eval($export.'return $module["a"](3);'));
 
         $a = new DependencyInjection();
         $a->provider('a', ['b', 'c', function ($b, $c) {
@@ -159,8 +159,8 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
             "  'b' => function () use (&\$module) {",
             "    \$d = \$module['d'];",
             "    \$c = \$module['c'];",
-            "    return \$d + \$c;",
-            "  },",
+            '    return $d + $c;',
+            '  },',
             "  'c' => 1,",
             "  'd' => 2,",
             '];',
@@ -178,7 +178,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         $actual = implode(PHP_EOL, $actual);
 
         self::assertSame($expected, $actual);
-        self::assertSame(3, eval($export . 'return $module["b"]();'));
+        self::assertSame(3, eval($export.'return $module["b"]();'));
     }
 
     /**
@@ -197,8 +197,8 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         $expected = [
             '$module = [',
             "  'a' => function (array \$array, Phug\\Util\\UnorderedArguments \$args) use (&\$module) {",
-            "    return \$args->required(\$array[0]);",
-            "  },",
+            '    return $args->required($array[0]);',
+            '  },',
             '];',
         ];
         $expected = array_filter(array_map(function ($line) {
@@ -214,7 +214,37 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
         $actual = implode(PHP_EOL, $actual);
 
         self::assertSame($expected, $actual);
-        self::assertSame(true, eval($export . 'return $module["a"](["boolean"], new \\Phug\\Util\\UnorderedArguments([true]));'));
+        self::assertSame(true, eval($export.'return $module["a"](["boolean"], new \\Phug\\Util\\UnorderedArguments([true]));'));
+
+        $a = new DependencyInjection();
+        $a->provider('a', function () {
+            return function (&$pass = null) {
+                $pass = 42;
+            };
+        });
+        $a->setAsRequired('a');
+
+        $expected = [
+            '$module = [',
+            "  'a' => function (&\$pass = NULL) use (&\$module) {",
+            '    $pass = 42;',
+            '  },',
+            '];',
+        ];
+        $expected = array_filter(array_map(function ($line) {
+            return ltrim($line);
+        }, $expected));
+        $expected = implode(PHP_EOL, $expected);
+
+        $export = $a->export('module');
+        $actual = explode(PHP_EOL, $export);
+        $actual = array_filter(array_map(function ($line) {
+            return ltrim($line);
+        }, $actual));
+        $actual = implode(PHP_EOL, $actual);
+
+        self::assertSame($expected, $actual);
+        self::assertSame(42, eval($export.'$module["a"]($box); return $box;'));
     }
 
     /**
