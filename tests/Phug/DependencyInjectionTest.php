@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Phug\Test;
 
 use Phug\DependencyInjection;
