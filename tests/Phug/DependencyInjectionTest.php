@@ -81,6 +81,7 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
 
     /**
      * @covers \Phug\DependencyInjection::<public>
+     * @covers \Phug\DependencyInjection\FunctionWrapper::<public>
      * @covers \Phug\DependencyInjection\Dependency::<public>
      * @covers \Phug\DependencyInjection\Requirement::<public>
      */
@@ -158,6 +159,7 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
 
     /**
      * @covers \Phug\DependencyInjection::dumpDependency
+     * @covers \Phug\DependencyInjection\FunctionWrapper::<public>
      */
     public function testDumpDependency()
     {
