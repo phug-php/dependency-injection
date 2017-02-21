@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1487668049">
+  <project timestamp="1487668049">
+    <package name="Phug">
+      <file name="C:\Users\bastien.miclo\Perso\phug-php\dependency-injection\src\Phug/DependencyException.php">
+        <class name="DependencyException" namespace="Phug">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="10" ncloc="7" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="C:\Users\bastien.miclo\Perso\phug-php\dependency-injection\src\Phug/DependencyInjection.php">
+        <class name="DependencyInjection" namespace="Phug">
+          <metrics complexity="34" methods="11" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="94" coveredstatements="92" elements="105" coveredelements="102"/>
+        </class>
+        <line num="27" type="method" name="import" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="39" type="method" name="setAsRequired" visibility="public" complexity="5" crap="5" count="2"/>
+        <line num="41" type="stmt" count="2"/>
+        <line num="42" type="stmt" count="2"/>
+        <line num="43" type="stmt" count="2"/>
+        <line num="45" type="stmt" count="2"/>
+        <line num="48" type="stmt" count="2"/>
+        <line num="49" type="stmt" count="2"/>
+        <line num="50" type="stmt" count="2"/>
+        <line num="52" type="stmt" count="1"/>
+        <line num="53" type="stmt" count="1"/>
+        <line num="54" type="stmt" count="1"/>
+        <line num="55" type="stmt" count="1"/>
+        <line num="56" type="stmt" count="1"/>
+        <line num="57" type="stmt" count="1"/>
+        <line num="59" type="stmt" count="1"/>
+        <line num="60" type="stmt" count="1"/>
+        <line num="61" type="stmt" count="1"/>
+        <line num="62" type="stmt" count="1"/>
+        <line num="63" type="stmt" count="1"/>
+        <line num="68" type="stmt" count="1"/>
+        <line num="76" type="method" name="dumpDependency" visibility="public" complexity="12" crap="12.03" count="2"/>
+        <line num="78" type="stmt" count="2"/>
+        <line num="80" type="stmt" count="2"/>
+        <line num="81" type="stmt" count="1"/>
+        <line num="84" type="stmt" count="2"/>
+        <line num="85" type="stmt" count="2"/>
+        <line num="86" type="stmt" count="2"/>
+        <line num="87" type="stmt" count="2"/>
+        <line num="88" type="stmt" count="2"/>
+        <line num="89" type="stmt" count="2"/>
+        <line num="90" type="stmt" count="1"/>
+        <line num="91" type="stmt" count="2"/>
+        <line num="92" type="stmt" count="1"/>
+        <line num="94" type="stmt" count="2"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="97" type="stmt" count="2"/>
+        <line num="98" type="stmt" count="2"/>
+        <line num="99" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="2"/>
+        <line num="103" type="stmt" count="2"/>
+        <line num="104" type="stmt" count="2"/>
+        <line num="105" type="stmt" count="2"/>
+        <line num="106" type="stmt" count="2"/>
+        <line num="107" type="stmt" count="1"/>
+        <line num="110" type="stmt" count="2"/>
+        <line num="111" type="stmt" count="2"/>
+        <line num="112" type="stmt" count="2"/>
+        <line num="113" type="stmt" count="2"/>
+        <line num="114" type="stmt" count="2"/>
+        <line num="115" type="stmt" count="2"/>
+        <line num="116" type="stmt" count="2"/>
+        <line num="117" type="stmt" count="2"/>
+        <line num="119" type="stmt" count="2"/>
+        <line num="120" type="stmt" count="2"/>
+        <line num="121" type="stmt" count="2"/>
+        <line num="124" type="stmt" count="2"/>
+        <line num="132" type="method" name="export" visibility="public" complexity="3" crap="3" count="1"/>
+        <line num="134" type="stmt" count="1"/>
+        <line num="135" type="stmt" count="1"/>
+        <line num="139" type="stmt" count="1"/>
+        <line num="140" type="stmt" count="1"/>
+        <line num="141" type="stmt" count="1"/>
+        <line num="142" type="stmt" count="1"/>
+        <line num="143" type="stmt" count="1"/>
+        <line num="144" type="stmt" count="1"/>
+        <line num="147" type="stmt" count="1"/>
+        <line num="149" type="stmt" count="1"/>
+        <line num="160" type="method" name="provider" visibility="public" complexity="4" crap="4" count="4"/>
+        <line num="162" type="stmt" count="4"/>
+        <line num="163" type="stmt" count="1"/>
+        <line num="165" type="stmt" count="4"/>
+        <line num="166" type="stmt" count="1"/>
+        <line num="167" type="stmt" count="1"/>
+        <line num="168" type="stmt" count="1"/>
+        <line num="172" type="stmt" count="3"/>
+        <line num="173" type="stmt" count="3"/>
+        <line num="175" type="stmt" count="3"/>
+        <line num="184" type="method" name="register" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="187" type="stmt" count="3"/>
+        <line num="188" type="stmt" count="3"/>
+        <line num="198" type="method" name="getProvider" visibility="public" complexity="2" crap="2" count="4"/>
+        <line num="200" type="stmt" count="4"/>
+        <line num="201" type="stmt" count="1"/>
+        <line num="202" type="stmt" count="1"/>
+        <line num="203" type="stmt" count="1"/>
+        <line num="207" type="stmt" count="3"/>
+        <line num="216" type="method" name="set" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="218" type="stmt" count="3"/>
+        <line num="220" type="stmt" count="3"/>
+        <line num="228" type="method" name="get" visibility="public" complexity="3" crap="3" count="4"/>
+        <line num="230" type="stmt" count="4"/>
+        <line num="231" type="stmt" count="4"/>
+        <line num="232" type="stmt" count="4"/>
+        <line num="233" type="stmt" count="1"/>
+        <line num="236" type="stmt" count="4"/>
+        <line num="238" type="stmt" count="4"/>
+        <line num="239" type="method" name="anonymous function" complexity="1" crap="1" count="4"/>
+        <line num="240" type="stmt" count="2"/>
+        <line num="241" type="stmt" count="4"/>
+        <line num="243" type="stmt" count="4"/>
+        <line num="246" type="stmt" count="4"/>
+        <line num="254" type="method" name="call" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="256" type="stmt" count="3"/>
+        <line num="257" type="stmt" count="3"/>
+        <line num="258" type="stmt" count="3"/>
+        <metrics loc="261" ncloc="193" classes="1" methods="11" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="96" coveredstatements="94" elements="107" coveredelements="104"/>
+      </file>
+    </package>
+    <package name="Phug\DependencyInjection">
+      <file name="C:\Users\bastien.miclo\Perso\phug-php\dependency-injection\src\Phug/DependencyInjection/Dependency.php">
+        <class name="Dependency" namespace="Phug\DependencyInjection">
+          <metrics complexity="6" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="15" coveredelements="15"/>
+        </class>
+        <line num="20" type="method" name="__construct" visibility="public" complexity="4" crap="4" count="3"/>
+        <line num="22" type="stmt" count="3"/>
+        <line num="23" type="stmt" count="3"/>
+        <line num="26" type="stmt" count="3"/>
+        <line num="28" type="stmt" count="3"/>
+        <line num="30" type="stmt" count="3"/>
+        <line num="31" type="stmt" count="3"/>
+        <line num="34" type="stmt" count="3"/>
+        <line num="36" type="stmt" count="3"/>
+        <line num="37" type="stmt" count="3"/>
+        <line num="42" type="method" name="setDependencies" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="44" type="stmt" count="3"/>
+        <line num="45" type="stmt" count="3"/>
+        <line num="50" type="method" name="getDependencies" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="52" type="stmt" count="3"/>
+        <metrics loc="54" ncloc="45" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="15" coveredelements="15"/>
+      </file>
+      <file name="C:\Users\bastien.miclo\Perso\phug-php\dependency-injection\src\Phug/DependencyInjection/Requirement.php">
+        <class name="Requirement" namespace="Phug\DependencyInjection">
+          <metrics complexity="7" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="17" coveredelements="17"/>
+        </class>
+        <line num="19" type="method" name="__construct" visibility="public" complexity="3" crap="3" count="3"/>
+        <line num="21" type="stmt" count="3"/>
+        <line num="23" type="stmt" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="26" type="stmt" count="3"/>
+        <line num="29" type="stmt" count="3"/>
+        <line num="30" type="stmt" count="3"/>
+        <line num="35" type="method" name="isRequired" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="45" type="method" name="setRequired" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="47" type="stmt" count="3"/>
+        <line num="49" type="stmt" count="3"/>
+        <line num="55" type="method" name="getDependency" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="57" type="stmt" count="3"/>
+        <line num="65" type="method" name="setDependency" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="67" type="stmt" count="3"/>
+        <line num="69" type="stmt" count="3"/>
+        <metrics loc="71" ncloc="49" classes="1" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="17" coveredelements="17"/>
+      </file>
+    </package>
+    <file name="C:\Users\bastien.miclo\Perso\phug-php\dependency-injection\src\Phug/DependencyInjectionInterface.php">
+      <metrics loc="28" ncloc="28" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <metrics files="5" loc="424" ncloc="322" classes="4" methods="19" coveredmethods="18" conditionals="0" coveredconditionals="0" statements="120" coveredstatements="118" elements="139" coveredelements="136"/>
+  </project>
+</coverage>

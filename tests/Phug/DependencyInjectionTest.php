@@ -5,7 +5,7 @@ namespace Phug\Test;
 use Phug\DependencyInjection;
 use Phug\Util\UnorderedArguments;
 
-class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
+class DependencyInjectionTest extends AbstractDependencyInjectionTest
 {
     /**
      * @covers \Phug\DependencyInjection::<public>
@@ -86,25 +86,26 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testExport()
     {
-        $a = new DependencyInjection();
-        $a->provider('a', ['b', 'c', function ($b, $c) {
+        $injector = new DependencyInjection();
+        $injector->provider('a', ['b', 'c', function ($b, $c) {
             return function ($n) use ($b, $c) {
                 return $n + $b() + $c;
             };
         }]);
-        $a->provider('b', ['d', 'c', function ($d, $c) {
+        $injector->provider('b', ['d', 'c', function ($d, $c) {
             return function () use ($d, $c) {
                 return $d + $c;
             };
         }]);
-        $a->register('c', 1);
-        $a->register('d', 2);
+        $injector->register('c', 1);
+        $injector->register('d', 2);
 
-        self::assertSame(7, $a->call('a', 3));
+        self::assertSame(7, $injector->call('a', 3));
 
-        $a->setAsRequired('a');
+        $injector->setAsRequired('a');
+        $export = $injector->export('module');
 
-        $expected = [
+        self::assertSameLines([
             '$module = [',
             "  'a' => function (\$n) use (&\$module) {",
             "    \$b = \$module['b'];",
@@ -119,41 +120,29 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
             "  'c' => 1,",
             "  'd' => 2,",
             '];',
-        ];
-        $expected = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $expected));
-        $expected = implode(PHP_EOL, $expected);
-
-        $export = $a->export('module');
-        $actual = explode(PHP_EOL, $export);
-        $actual = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $actual));
-        $actual = implode(PHP_EOL, $actual);
-
-        self::assertSame($expected, $actual);
+        ], $export);
         self::assertSame(7, eval($export.'return $module["a"](3);'));
 
-        $a = new DependencyInjection();
-        $a->provider('a', ['b', 'c', function ($b, $c) {
+        $injector = new DependencyInjection();
+        $injector->provider('a', ['b', 'c', function ($b, $c) {
             return function ($n) use ($b, $c) {
                 return $n + $b() + $c;
             };
         }]);
-        $a->provider('b', ['d', 'c', function ($d, $c) {
+        $injector->provider('b', ['d', 'c', function ($d, $c) {
             return function () use ($d, $c) {
                 return $d + $c;
             };
         }]);
-        $a->register('c', 1);
-        $a->register('d', 2);
+        $injector->register('c', 1);
+        $injector->register('d', 2);
 
-        self::assertSame(3, $a->call('b'));
+        self::assertSame(3, $injector->call('b'));
 
-        $a->setAsRequired('b');
+        $injector->setAsRequired('b');
+        $export = $injector->export('module');
 
-        $expected = [
+        self::assertSameLines([
             '$module = [',
             "  'b' => function () use (&\$module) {",
             "    \$d = \$module['d'];",
@@ -163,20 +152,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
             "  'c' => 1,",
             "  'd' => 2,",
             '];',
-        ];
-        $expected = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $expected));
-        $expected = implode(PHP_EOL, $expected);
-
-        $export = $a->export('module');
-        $actual = explode(PHP_EOL, $export);
-        $actual = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $actual));
-        $actual = implode(PHP_EOL, $actual);
-
-        self::assertSame($expected, $actual);
+        ], $export);
         self::assertSame(3, eval($export.'return $module["b"]();'));
     }
 
@@ -185,64 +161,43 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDumpDependency()
     {
-        $a = new DependencyInjection();
-        $a->provider('a', function () {
+        $injector = new DependencyInjection();
+        $injector->provider('a', function () {
             return function (array $array, UnorderedArguments $args) {
                 return $args->required($array[0]);
             };
         });
-        $a->setAsRequired('a');
+        $injector->setAsRequired('a');
+        $export = $injector->export('module');
 
-        $expected = [
+        self::assertSameLines([
             '$module = [',
             "  'a' => function (array \$array, Phug\\Util\\UnorderedArguments \$args) use (&\$module) {",
             '    return $args->required($array[0]);',
             '  },',
             '];',
-        ];
-        $expected = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $expected));
-        $expected = implode(PHP_EOL, $expected);
+        ], $export);
+        self::assertSame(true, eval($export.'return $module["a"]('.
+            '["boolean"], '.
+            'new \\Phug\\Util\\UnorderedArguments([true])'.
+        ');'));
 
-        $export = $a->export('module');
-        $actual = explode(PHP_EOL, $export);
-        $actual = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $actual));
-        $actual = implode(PHP_EOL, $actual);
-
-        self::assertSame($expected, $actual);
-        self::assertSame(true, eval($export.'return $module["a"](["boolean"], new \\Phug\\Util\\UnorderedArguments([true]));'));
-
-        $a = new DependencyInjection();
-        $a->provider('a', function () {
+        $injector = new DependencyInjection();
+        $injector->provider('a', function () {
             return function (&$pass = null) {
                 $pass = 42;
             };
         });
-        $a->setAsRequired('a');
+        $injector->setAsRequired('a');
+        $export = $injector->export('module');
 
-        $expected = [
+        self::assertSameLines([
             '$module = [',
             "  'a' => function (&\$pass = NULL) use (&\$module) {",
             '    $pass = 42;',
             '  },',
             '];',
-        ];
-        $expected = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $expected));
-        $expected = implode(PHP_EOL, $expected);
-
-        $export = $a->export('module');
-        $actual = explode(PHP_EOL, $export);
-        $actual = array_filter(array_map(function ($line) {
-            return ltrim($line);
-        }, $actual));
-        $actual = implode(PHP_EOL, $actual);
-
-        self::assertSame($expected, $actual);
+        ], $export);
         self::assertSame(42, eval($export.'$module["a"]($box); return $box;'));
     }
 
@@ -254,7 +209,37 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testProviderException()
     {
-        $a = new DependencyInjection();
-        $a->provider('foobar', '-');
+        $injector = new DependencyInjection();
+        $injector->provider('foobar', '-');
+    }
+
+    /**
+     * @covers \Phug\DependencyInjection::get
+     */
+    public function testCache()
+    {
+        $providerCallCount = 0;
+        $serviceCallCount = 0;
+        $injector = new DependencyInjection();
+        $injector->provider('foobar', function () use (&$providerCallCount, &$serviceCallCount) {
+            $providerCallCount++;
+
+            return function () use (&$serviceCallCount) {
+                $serviceCallCount++;
+            };
+        });
+
+        self::assertSame(0, $providerCallCount);
+        self::assertSame(0, $serviceCallCount);
+
+        $injector->call('foobar');
+
+        self::assertSame(1, $providerCallCount);
+        self::assertSame(1, $serviceCallCount);
+
+        $injector->call('foobar');
+
+        self::assertSame(1, $providerCallCount);
+        self::assertSame(2, $serviceCallCount);
     }
 }

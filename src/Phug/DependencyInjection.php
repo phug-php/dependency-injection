@@ -15,6 +15,11 @@ class DependencyInjection implements DependencyInjectionInterface
     private $dependencies = [];
 
     /**
+     * @var array
+     */
+    private $cache = [];
+
+    /**
      * @param $name
      *
      * @return mixed
@@ -228,11 +233,17 @@ class DependencyInjection implements DependencyInjectionInterface
             return $value;
         }
 
-        $arguments = array_map(function ($dependencyName) {
-            return $this->get($dependencyName);
-        }, $dependency->getDependencies());
+        $cacheKey = spl_object_hash($value).'_'.$name;
 
-        return call_user_func_array($value, $arguments);
+        if (!isset($this->cache[$cacheKey])) {
+            $arguments = array_map(function ($dependencyName) {
+                return $this->get($dependencyName);
+            }, $dependency->getDependencies());
+
+            $this->cache[$cacheKey] = call_user_func_array($value, $arguments);
+        }
+
+        return $this->cache[$cacheKey];
     }
 
     /**
