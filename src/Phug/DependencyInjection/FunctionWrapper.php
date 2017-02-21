@@ -6,6 +6,11 @@ use ReflectionFunction;
 
 class FunctionWrapper extends ReflectionFunction
 {
+    /**
+     * Dump function parameters as a PHP tupple.
+     *
+     * @return string
+     */
     public function dumpParameters()
     {
         $parameters = [];
@@ -29,6 +34,11 @@ class FunctionWrapper extends ReflectionFunction
         return '('.implode(', ', $parameters).')';
     }
 
+    /**
+     * Dump function body contained inside brackets.
+     *
+     * @return string
+     */
     public function dumpBody()
     {
         $lines = file($this->getFileName());
