@@ -12,10 +12,6 @@ abstract class AbstractDependencyInjectionTest extends \PHPUnit_Framework_TestCa
             }
             $$var = str_replace(PHP_EOL, "\n", $$var);
             $$var = array_filter(array_map(function ($line) {
-                if (preg_match('/\},$/', $line) && ltrim($line) !== '},') {
-                    var_dump($line, ltrim($line));
-                    exit;
-                }
                 return ltrim($line);
             }, explode("\n", $$var)));
             $$var = implode(PHP_EOL, $$var);
