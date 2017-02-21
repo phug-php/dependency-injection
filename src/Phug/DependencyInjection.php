@@ -51,19 +51,12 @@ class DependencyInjection implements DependencyInjectionInterface
                 $this->setAsRequired($dependencyName);
             }
         } catch (DependencyException $e) {
-            switch ($e->getCode()) {
-                case 1:
-                    throw new DependencyException(
-                        'Dependency not found: '.$lastRequired.' < '.$name,
-                        2
-                    );
-                case 2:
-                    throw new DependencyException(
-                        $e->getMessage().
-                        ' < '.$name,
-                        2
-                    );
-            }
+            throw new DependencyException(
+                $e->getCode() === 1
+                    ? 'Dependency not found: '.$lastRequired.' < '.$name
+                    : $e->getMessage(). ' < '.$name,
+                2
+            );
         }
 
         return $this;
