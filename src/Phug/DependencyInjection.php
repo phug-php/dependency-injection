@@ -4,6 +4,7 @@ namespace Phug;
 
 use Closure;
 use Phug\DependencyInjection\Dependency;
+use Phug\DependencyInjection\FunctionWrapper;
 use Phug\DependencyInjection\Requirement;
 use ReflectionFunction;
 
@@ -42,18 +43,18 @@ class DependencyInjection implements DependencyInjectionInterface
             ->setRequired(true)
             ->getDependency();
 
-        $lastDependencyRequired = null;
+        $lastRequired = null;
 
         try {
             foreach ($provider->getDependencies() as $dependencyName) {
-                $lastDependencyRequired = $dependencyName;
+                $lastRequired = $dependencyName;
                 $this->setAsRequired($dependencyName);
             }
         } catch (DependencyException $e) {
             switch ($e->getCode()) {
                 case 1:
                     throw new DependencyException(
-                        'Dependency not found: '.$lastDependencyRequired.' < '.$name,
+                        'Dependency not found: '.$lastRequired.' < '.$name,
                         2
                     );
                 case 2:
@@ -81,45 +82,15 @@ class DependencyInjection implements DependencyInjectionInterface
             return var_export($value, true);
         }
 
-        $code = 'function (';
-        $function = new ReflectionFunction($value);
-        $parameters = [];
-        foreach ($function->getParameters() as $parameter) {
-            $string = '';
-            if ($parameter->isArray()) {
-                $string .= 'array ';
-            } elseif ($parameter->getClass()) {
-                $string .= $parameter->getClass()->name.' ';
-            }
-            if ($parameter->isPassedByReference()) {
-                $string .= '&';
-            }
-            $string .= '$'.$parameter->name;
-            if ($parameter->isOptional()) {
-                $string .= ' = '.var_export($parameter->getDefaultValue(), true);
-            }
-            $parameters[] = $string;
-        }
-        $code .= implode(', ', $parameters);
-        $code .= ')'.($storageVariable ? ' use (&$'.$storageVariable.')' : '').' {'.PHP_EOL;
+        $function = new FunctionWrapper($value);
+        $code = 'function '.$function->dumpParameters();
+        $code .= ($storageVariable ? ' use (&$'.$storageVariable.')' : '').' {'.PHP_EOL;
         if ($storageVariable) {
             foreach ($function->getStaticVariables() as $use => $value) {
                 $code .= '    $'.$use.' = $'.$storageVariable.'['.var_export($use, true).'];'.PHP_EOL;
             }
         }
-        $lines = file($function->getFileName());
-        $startLine = $function->getStartLine();
-        $endLine = $function->getEndLine();
-        $lines[$startLine - 1] = explode('{', $lines[$startLine - 1]);
-        $lines[$startLine - 1] = end($lines[$startLine - 1]);
-        $end = strrpos($lines[$endLine - 1], '}');
-        if ($end !== false) {
-            $lines[$endLine - 1] = substr($lines[$endLine - 1], 0, $end);
-        }
-        $lines[$endLine - 1] .= '}';
-        for ($line = $startLine - 1; $line < $endLine; $line++) {
-            $code .= $lines[$line];
-        }
+        $code .= $function->dumpBody();
 
         return $code;
     }
