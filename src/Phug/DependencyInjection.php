@@ -6,7 +6,6 @@ use Closure;
 use Phug\DependencyInjection\Dependency;
 use Phug\DependencyInjection\FunctionWrapper;
 use Phug\DependencyInjection\Requirement;
-use ReflectionFunction;
 
 class DependencyInjection implements DependencyInjectionInterface
 {
@@ -54,7 +53,7 @@ class DependencyInjection implements DependencyInjectionInterface
             throw new DependencyException(
                 $e->getCode() === 1
                     ? 'Dependency not found: '.$lastRequired.' < '.$name
-                    : $e->getMessage(). ' < '.$name,
+                    : $e->getMessage().' < '.$name,
                 2
             );
         }
