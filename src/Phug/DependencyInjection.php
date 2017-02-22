@@ -119,28 +119,35 @@ class DependencyInjection implements DependencyInjectionInterface
     }
 
     /**
+     * @return int
+     */
+    public function countRequiredDependencies()
+    {
+        return array_sum(array_map(function (Requirement $requirement) {
+            return $requirement->isRequired() ? 1 : 0;
+        }, $this->dependencies));
+    }
+
+    /**
      * @param $storageVariable
      *
      * @return string
      */
     public function export($storageVariable)
     {
-        $code = '$'.$storageVariable.' = ['.PHP_EOL;
-        foreach ($this->dependencies as $requirement) {
-            /**
-             * @var Requirement $requirement
-             */
-            if ($requirement->isRequired()) {
-                $dependencyName = $requirement->getDependency()->getName();
-                $code .= '  '.var_export($dependencyName, true).
-                    ' => '.
-                    $this->dumpDependency($dependencyName, $storageVariable).
-                    ','.PHP_EOL;
-            }
-        }
-        $code .= '];'.PHP_EOL;
+        return '$'.$storageVariable.' = ['.PHP_EOL.
+            implode('', array_map(function (Requirement $requirement) use ($storageVariable) {
+                if ($requirement->isRequired()) {
+                    $dependencyName = $requirement->getDependency()->getName();
+                    return '  '.var_export($dependencyName, true).
+                        ' => '.
+                        $this->dumpDependency($dependencyName, $storageVariable).
+                        ','.PHP_EOL;
+                }
 
-        return $code;
+                return '';
+            }, $this->dependencies)).
+            '];'.PHP_EOL;
     }
 
     /**

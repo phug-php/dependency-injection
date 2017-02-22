@@ -277,4 +277,29 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
         self::assertSame(4, $injector->call('c'));
         self::assertSame(4, eval($export.'return $dep["c"]();'));
     }
+
+    /**
+     * @covers \Phug\DependencyInjection::countRequiredDependencies
+     */
+    public function testCountRequiredDependencies()
+    {
+        $injector = new DependencyInjection();
+        $injector->provider('a', function () {
+            return 'foo';
+        });
+        $injector->provider('b', function () {
+            return 'bar';
+        });
+        $injector->provider('c', ['b', function ($a) {
+            return function () use ($a) {
+                return $a;
+            };
+        }]);
+
+        self::assertSame(0, $injector->countRequiredDependencies());
+        $injector->setAsRequired('a');
+        self::assertSame(1, $injector->countRequiredDependencies());
+        $injector->setAsRequired('c');
+        self::assertSame(3, $injector->countRequiredDependencies());
+    }
 }

@@ -16,6 +16,8 @@ interface DependencyInjectionInterface
 
     public function dumpDependency($name, $storageVariable);
 
+    public function countRequiredDependencies();
+
     public function export($storageVariable);
 
     public function provider($name, $provider);
