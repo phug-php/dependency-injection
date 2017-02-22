@@ -6,6 +6,7 @@ use Closure;
 use Phug\DependencyInjection\Dependency;
 use Phug\DependencyInjection\FunctionWrapper;
 use Phug\DependencyInjection\Requirement;
+use ReflectionParameter;
 
 class DependencyInjection implements DependencyInjectionInterface
 {
@@ -13,6 +14,11 @@ class DependencyInjection implements DependencyInjectionInterface
      * @var array[Requirement]
      */
     private $dependencies = [];
+
+    /**
+     * @var array
+     */
+    private $dependenciesParams = [];
 
     /**
      * @var array
@@ -81,8 +87,10 @@ class DependencyInjection implements DependencyInjectionInterface
             $dependencies = $this->getProvider($name)
                 ->getDependency()
                 ->getDependencies();
-            foreach (array_keys($function->getStaticVariables()) as $index => $use) {
-                $code .= '    $'.$use.' = $'.$storageVariable.'['.var_export($dependencies[$index], true).'];'.PHP_EOL;
+            foreach (array_keys($function->getStaticVariables()) as $use) {
+                $index = array_search($use, $this->dependenciesParams[$name]);
+                $dependency = $dependencies[$index];
+                $code .= '    $'.$use.' = $'.$storageVariable.'['.var_export($dependency, true).'];'.PHP_EOL;
             }
         }
         $code .= $function->dumpBody();
@@ -198,6 +206,11 @@ class DependencyInjection implements DependencyInjectionInterface
         if (!($value instanceof Closure)) {
             return $value;
         }
+
+        $function = new FunctionWrapper($value);
+        $this->dependenciesParams[$name] = array_map(function (ReflectionParameter $param) {
+            return $param->name;
+        }, $function->getParameters());
 
         $cacheKey = spl_object_hash($value).'_'.$name;
 
