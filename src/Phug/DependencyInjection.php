@@ -139,6 +139,7 @@ class DependencyInjection implements DependencyInjectionInterface
             implode('', array_map(function (Requirement $requirement) use ($storageVariable) {
                 if ($requirement->isRequired()) {
                     $dependencyName = $requirement->getDependency()->getName();
+
                     return '  '.var_export($dependencyName, true).
                         ' => '.
                         $this->dumpDependency($dependencyName, $storageVariable).
