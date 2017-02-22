@@ -8,6 +8,8 @@ interface DependencyInjectionInterface
 {
     public function import($name);
 
+    public function importDependency($name);
+
     public function setAsRequired($name);
 
     public function getStorageItem($name, $storageVariable);

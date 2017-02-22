@@ -258,10 +258,10 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
             };
         }]);
         $injector->setAsRequired('a');
-        $export = $injector->export('a');
+        $export = $injector->export('dep');
 
         self::assertSame('foo', $injector->call('a'));
-        self::assertSame('foo', eval($export.'return $a["a"]();'));
+        self::assertSame('foo', eval($export.'return $dep["a"]();'));
 
         $injector = new DependencyInjection();
         $injector->register('a', 3);

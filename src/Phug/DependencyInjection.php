@@ -32,7 +32,20 @@ class DependencyInjection implements DependencyInjectionInterface
      */
     public function import($name)
     {
-        return $this->setAsRequired($name)->get($name);
+        return $this->setAsRequired($name)
+            ->get($name);
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function importDependency($name)
+    {
+        return $this->getProvider($name)
+            ->setRequired(true)
+            ->getDependency();
     }
 
     /**
@@ -44,10 +57,7 @@ class DependencyInjection implements DependencyInjectionInterface
      */
     public function setAsRequired($name)
     {
-        $provider = $this->getProvider($name)
-            ->setRequired(true)
-            ->getDependency();
-
+        $provider = $this->importDependency($name);
         $lastRequired = null;
 
         try {
