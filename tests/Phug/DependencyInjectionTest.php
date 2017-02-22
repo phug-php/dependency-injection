@@ -244,4 +244,22 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
         self::assertSame(1, $providerCallCount);
         self::assertSame(2, $serviceCallCount);
     }
+
+    public function testAlias()
+    {
+        $injector = new DependencyInjection();
+        $injector->provider('foo-bar::a b', function () {
+            return 'foo';
+        });
+        $injector->provider('a', ['foo-bar::a b', function ($a) {
+            return function () use ($a) {
+                return $a;
+            };
+        }]);
+        $injector->setAsRequired('a');
+        $export = $injector->export('a');
+
+        self::assertSame('foo', $injector->call('a'));
+        self::assertSame('foo', eval($export.'return $a["a"]();'));
+    }
 }

@@ -78,8 +78,11 @@ class DependencyInjection implements DependencyInjectionInterface
         $code = 'function '.$function->dumpParameters();
         $code .= ($storageVariable ? ' use (&$'.$storageVariable.')' : '').' {'.PHP_EOL;
         if ($storageVariable) {
-            foreach ($function->getStaticVariables() as $use => $value) {
-                $code .= '    $'.$use.' = $'.$storageVariable.'['.var_export($use, true).'];'.PHP_EOL;
+            $dependencies = $this->getProvider($name)
+                ->getDependency()
+                ->getDependencies();
+            foreach (array_keys($function->getStaticVariables()) as $index => $use) {
+                $code .= '    $'.$use.' = $'.$storageVariable.'['.var_export($dependencies[$index], true).'];'.PHP_EOL;
             }
         }
         $code .= $function->dumpBody();
