@@ -68,6 +68,16 @@ class DependencyInjection implements DependencyInjectionInterface
     }
 
     /**
+     * @param string $dependency dependency name
+     *
+     * @return string
+     */
+    public function getStorageItem($name, $storageVariable)
+    {
+        return '$'.$storageVariable.'['.var_export($name, true).']';
+    }
+
+    /**
      * @param string $storageVariable
      *
      * @return string
@@ -89,8 +99,8 @@ class DependencyInjection implements DependencyInjectionInterface
                 ->getDependencies();
             foreach (array_keys($function->getStaticVariables()) as $use) {
                 $index = array_search($use, $this->dependenciesParams[$name]);
-                $dependency = $dependencies[$index];
-                $code .= '    $'.$use.' = $'.$storageVariable.'['.var_export($dependency, true).'];'.PHP_EOL;
+                $dependency = $this->getStorageItem($dependencies[$index], $storageVariable);
+                $code .= '    $'.$use.' = '.$dependency.';'.PHP_EOL;
             }
         }
         $code .= $function->dumpBody();

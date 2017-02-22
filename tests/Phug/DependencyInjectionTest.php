@@ -158,6 +158,7 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
     }
 
     /**
+     * @covers \Phug\DependencyInjection::getStorageItem
      * @covers \Phug\DependencyInjection::dumpDependency
      * @covers \Phug\DependencyInjection\FunctionWrapper::<public>
      */

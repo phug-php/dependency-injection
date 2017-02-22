@@ -10,6 +10,8 @@ interface DependencyInjectionInterface
 
     public function setAsRequired($name);
 
+    public function getStorageItem($name, $storageVariable);
+
     public function dumpDependency($name, $storageVariable);
 
     public function export($storageVariable);
