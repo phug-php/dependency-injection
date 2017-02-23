@@ -55,14 +55,14 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
 
         self::assertSame([
             'escape' => false,
-            'upper' => false,
+            'upper'  => false,
         ], $injector->getRequirementsStates());
 
         $injector->setAsRequired('escape');
 
         self::assertSame([
             'escape' => true,
-            'upper' => false,
+            'upper'  => false,
         ], $injector->getRequirementsStates());
     }
 
