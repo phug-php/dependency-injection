@@ -42,6 +42,24 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
     }
 
     /**
+     * @covers \Phug\DependencyInjection::<public>
+     */
+    public function testProviderWithReference()
+    {
+        $injector = new DependencyInjection();
+        $text = '<';
+        $injector->provider('escape', function () {
+            return function (&$ref) {
+                $ref = htmlspecialchars($ref);
+            };
+        });
+        $escape = $injector->get('escape');
+        $escape($text);
+
+        self::assertSame('&lt;', $text);
+    }
+
+    /**
      * @covers \Phug\DependencyInjection::getRequirementsStates
      */
     public function testGetRequirementsStates()
