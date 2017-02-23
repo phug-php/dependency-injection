@@ -42,6 +42,31 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
     }
 
     /**
+     * @covers \Phug\DependencyInjection::getRequirementsStates
+     */
+    public function testGetRequirementsStates()
+    {
+        $injector = new DependencyInjection();
+
+        self::assertSame([], $injector->getRequirementsStates());
+
+        $injector->provider('escape', 'htmlspecialchars');
+        $injector->register('upper', 'strtoupper');
+
+        self::assertSame([
+            'escape' => false,
+            'upper' => false,
+        ], $injector->getRequirementsStates());
+
+        $injector->setAsRequired('escape');
+
+        self::assertSame([
+            'escape' => true,
+            'upper' => false,
+        ], $injector->getRequirementsStates());
+    }
+
+    /**
      * @covers \Phug\DependencyInjection::import
      */
     public function testImport()

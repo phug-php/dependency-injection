@@ -129,6 +129,20 @@ class DependencyInjection implements DependencyInjectionInterface
     }
 
     /**
+     * Return the state of each requirement as an array where the key is the
+     * requirement name and the value is true if it's already required,
+     * false else.
+     *
+     * @return array
+     */
+    public function getRequirementsStates()
+    {
+        return array_map(function (Requirement $requirement) {
+            return $requirement->isRequired();
+        }, $this->dependencies);
+    }
+
+    /**
      * @param $storageVariable
      *
      * @return string
