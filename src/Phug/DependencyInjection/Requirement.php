@@ -20,7 +20,7 @@ class Requirement
     {
         $arguments = new UnorderedArguments(func_get_args());
 
-        $this->setRequired($arguments->optional('bool') ?: false);
+        $this->setRequired($arguments->optional('boolean') ?: false);
 
         if ($dependency = $arguments->optional(Dependency::class)) {
             $this->setDependency($dependency);

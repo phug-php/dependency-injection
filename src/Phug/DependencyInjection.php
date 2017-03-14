@@ -231,9 +231,8 @@ class DependencyInjection implements DependencyInjectionInterface
      */
     public function set($name, Dependency $dependency)
     {
-        if (!isset($this->dependencies[$name])) {
-            $this->dependencies[$name] = new Requirement($dependency);
-        }
+        $required = isset($this->dependencies[$name]) && $this->dependencies[$name]->isRequired();
+        $this->dependencies[$name] = new Requirement($dependency, $required);
 
         return $this;
     }
