@@ -207,13 +207,23 @@ class DependencyInjection implements DependencyInjectionInterface
     /**
      * @param string $name
      *
+     * @return bool
+     */
+    public function has($name)
+    {
+        return isset($this->dependencies[$name]);
+    }
+
+    /**
+     * @param string $name
+     *
      * @throws DependencyException
      *
      * @return Requirement
      */
     public function getProvider($name)
     {
-        if (!isset($this->dependencies[$name])) {
+        if (!$this->has($name)) {
             throw new DependencyException(
                 $name.' dependency not found.',
                 1
