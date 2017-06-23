@@ -46,9 +46,9 @@ class FunctionWrapper extends ReflectionFunction
         $endLine = $this->getEndLine();
         $lines[$startLine - 1] = explode('{', $lines[$startLine - 1]);
         $lines[$startLine - 1] = end($lines[$startLine - 1]);
-        $end = strrpos($lines[$endLine - 1], '}');
+        $end = mb_strrpos($lines[$endLine - 1], '}');
         if ($end !== false) {
-            $lines[$endLine - 1] = substr($lines[$endLine - 1], 0, $end);
+            $lines[$endLine - 1] = mb_substr($lines[$endLine - 1], 0, $end);
         }
         $lines[$endLine - 1] .= '}';
 
