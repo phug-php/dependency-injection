@@ -65,11 +65,11 @@ class DependencyInjection implements DependencyInjectionInterface
                 $lastRequired = $dependencyName;
                 $this->setAsRequired($dependencyName);
             }
-        } catch (DependencyException $e) {
+        } catch (DependencyException $exception) {
             throw new DependencyException(
-                $e->getCode() === 1
+                $exception->getCode() === 1
                     ? 'Dependency not found: '.$lastRequired.' < '.$name
-                    : $e->getMessage().' < '.$name,
+                    : $exception->getMessage().' < '.$name,
                 2
             );
         }
