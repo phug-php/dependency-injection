@@ -261,10 +261,11 @@ class DependencyInjection implements DependencyInjectionInterface
 
     /**
      * @param string $name
+     * @param array  $exclude
      *
      * @return mixed
      */
-    public function get($name)
+    public function get($name, array $exclude = [])
     {
         $dependency = $this->getProvider($name)->getDependency();
         $value = $dependency->getValue();
@@ -272,6 +273,7 @@ class DependencyInjection implements DependencyInjectionInterface
             return $value;
         }
 
+        $exclude[] = $name;
         $function = new FunctionWrapper($value);
         $this->dependenciesParams[$name] = array_map(function (ReflectionParameter $param) {
             return $param->name;
@@ -280,8 +282,10 @@ class DependencyInjection implements DependencyInjectionInterface
         $cacheKey = spl_object_hash($value).'_'.$name;
 
         if (!isset($this->cache[$cacheKey])) {
-            $arguments = array_map(function ($dependencyName) {
-                return $this->get($dependencyName);
+            $arguments = array_map(function ($dependencyName) use ($exclude) {
+                return in_array($dependencyName, $exclude)
+                    ? $dependencyName
+                    : $this->get($dependencyName, $exclude);
             }, $dependency->getDependencies());
 
             $this->cache[$cacheKey] = call_user_func_array($value, $arguments);
