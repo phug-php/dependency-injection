@@ -39,13 +39,23 @@ class DependencyInjection implements DependencyInjectionInterface
     /**
      * @param $name
      *
-     * @return mixed
+     * @return Dependency
      */
     public function importDependency($name)
     {
         return $this->getProvider($name)
             ->setRequired(true)
             ->getDependency();
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function isRequired($name)
+    {
+        return $this->getProvider($name)->isRequired();
     }
 
     /**
@@ -63,7 +73,9 @@ class DependencyInjection implements DependencyInjectionInterface
         try {
             foreach ($provider->getDependencies() as $dependencyName) {
                 $lastRequired = $dependencyName;
-                $this->setAsRequired($dependencyName);
+                if (!$this->isRequired($dependencyName)) {
+                    $this->setAsRequired($dependencyName);
+                }
             }
         } catch (DependencyException $exception) {
             throw new DependencyException(

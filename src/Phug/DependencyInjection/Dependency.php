@@ -37,7 +37,7 @@ class Dependency
     }
 
     /**
-     * @param array $dependencies
+     * @param array<string> $dependencies
      */
     public function setDependencies(array $dependencies)
     {
@@ -45,7 +45,7 @@ class Dependency
     }
 
     /**
-     * @return array
+     * @return array<string>
      */
     public function getDependencies()
     {
