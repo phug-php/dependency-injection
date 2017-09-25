@@ -282,9 +282,12 @@ class DependencyInjection implements DependencyInjectionInterface
         $cacheKey = spl_object_hash($value).'_'.$name;
 
         if (!isset($this->cache[$cacheKey])) {
-            $arguments = array_map(function ($dependencyName) use ($exclude) {
+            $callee = function () use ($cacheKey) {
+                return call_user_func_array($this->cache[$cacheKey], func_get_args());
+            };
+            $arguments = array_map(function ($dependencyName) use ($exclude, $callee) {
                 return in_array($dependencyName, $exclude)
-                    ? $dependencyName
+                    ? $callee
                     : $this->get($dependencyName, $exclude);
             }, $dependency->getDependencies());
 
