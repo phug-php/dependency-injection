@@ -345,4 +345,33 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
         $injector->setAsRequired('c');
         self::assertSame(3, $injector->countRequiredDependencies());
     }
+
+    /**
+     * @covers \Phug\DependencyInjection::get
+     */
+    public function testRecursion()
+    {
+        $injector = new DependencyInjection();
+        $injector->provider('r', ['r', function ($r) {
+            return function ($input, $depth = 0) use ($r) {
+                if (!is_array($input)) {
+                    return $input;
+                }
+
+                $result = '';
+                foreach ($input as $key => $value) {
+                    $result .= "\n+".str_repeat('-', $depth * 2).$key.'='.$r($value, $depth + 1);
+                }
+
+                return $result;
+            };
+        }]);
+        $result = ltrim($injector->call('r', [
+            'foo' => [
+                'bar' => 42,
+            ],
+        ]));
+
+        self::assertSame("+foo=\n+--bar=42", $result);
+    }
 }
