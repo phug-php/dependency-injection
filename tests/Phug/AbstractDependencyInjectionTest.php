@@ -2,7 +2,9 @@
 
 namespace Phug\Test;
 
-abstract class AbstractDependencyInjectionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class AbstractDependencyInjectionTest extends TestCase
 {
     public static function assertSameLines($expected, $actual)
     {

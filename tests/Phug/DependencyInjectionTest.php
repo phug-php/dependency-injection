@@ -223,7 +223,7 @@ class DependencyInjectionTest extends AbstractDependencyInjectionTest
             '  },',
             '];',
         ], $export);
-        self::assertSame(true, eval($export.'return $module["a"]('.
+        self::assertTrue(eval($export.'return $module["a"]('.
             '["boolean"], '.
             'new \\Phug\\Util\\UnorderedArguments([true])'.
         ');'));
