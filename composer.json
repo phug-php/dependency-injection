@@ -2,7 +2,7 @@
     "name": "phug/dependency-injection",
     "type": "library",
     "keywords": ["phug", "dependency-injection", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
-    "description": "",
+    "description": "Phug dependency injection engine",
     "license": "MIT",
     "homepage": "http://phug-lang.com",
     "authors": [
