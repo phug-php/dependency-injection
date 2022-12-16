@@ -1,5 +1,5 @@
 
-Phug Formatter
+Phug Dependency-Injection
 ========
 
 What is Phug Dependency Injection?
@@ -18,5 +18,10 @@ Install via Composer
 composer require phug/dependency-injection
 ```
 
-Usage
------
+Security contact information
+----------------------------
+
+To report a security vulnerability, please use the
+[Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
+ 
