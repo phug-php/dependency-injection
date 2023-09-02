@@ -305,7 +305,7 @@ class DependencyInjection implements DependencyInjectionInterface
                 return call_user_func_array($this->cache[$cacheKey], func_get_args());
             };
             $arguments = array_map(function ($dependencyName) use ($exclude, $callee) {
-                return in_array($dependencyName, $exclude, true)
+                return in_array($dependencyName, $exclude)
                     ? $callee
                     : $this->get($dependencyName, $exclude);
             }, $dependency->getDependencies());
